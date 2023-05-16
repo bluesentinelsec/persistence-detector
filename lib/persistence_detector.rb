@@ -1,16 +1,12 @@
+# frozen_string_literal: true
 
-class PersistenceDetector
-  # Summary
-  #
-  # Example:
-  #   >> TBD
-  #   => TBD
-  #
-  # Arguments:
-  #   var_name: (String)
-  def self.hello
-    puts "Hello from PersistenceDetector!"
+module PersistenceDetector
+  # Client docs TBD
+  class Client
+    def self.client
+      puts 'hello from PersistenceDetector::Client.client()'
+    end
   end
 end
 
-require "persistence_detector/widget"
+require 'persistence_detector/widget'
