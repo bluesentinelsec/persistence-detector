@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require "persistence_detector"
+
+testing = PersistenceDetector
+testing.hello
+
+widget = PersistenceDetector::Widget.new()
+widget.Hello
