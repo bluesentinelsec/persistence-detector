@@ -3,8 +3,65 @@
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'persistence_detector'
 
+require 'logger'
+require 'optparse'
+
+# ToDo - remove these placeholder stubs
 testing = PersistenceDetector::Client
 testing.client
-
 widget = PersistenceDetector::Widget.new
 widget.Hello
+
+usage = <<~END
+
+  persistence-detector: detect persistent auto-start programs
+
+  Examples:
+
+  1. Scan system against all applicable persistence TTPs:
+      persistence-detector
+
+  2. View supported persistence detectors:
+      persistence-detector --list
+
+  3. Scan for a specific persistence TTP (Scheduled Task/Job: Cron):
+      persistence-detector --detect T1053.003
+
+  4. Enable verbose console logging
+      persistence-detector -v
+
+END
+
+@options = {}
+OptionParser.new do |opts|
+  opts.banner = "\npersistence-detector: detect persistent auto-start programs\n\n"
+  opts.on('-d', '--detect ttp', 'Detects a specific persistence TTP') do |ttp|
+    @options[:detect] = ttp
+  end
+  opts.on('-l', '--list', 'List available persistence TTP detectors.') do
+    @options[:list] = true
+  end
+  opts.on('-v', '--verbose', 'Display detailed console logs') do
+    @options[:verbose] = true
+  end
+  opts.on('-e', '--examples', 'Display example commands') do
+    @options[:examples] = true
+  end
+end.parse!
+
+# setup console logging
+log = Logger.new($stdout)
+log.level = Logger::INFO
+log.level = Logger::DEBUG if @options[:verbose]
+
+if @options[:examples]
+  puts(usage)
+
+elsif @options[:list]
+  puts('do --list')
+
+elsif @options[:detect]
+  puts("do --detect: #{@options[:detect]}")
+else
+  puts(usage)
+end
