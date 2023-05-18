@@ -6,12 +6,6 @@ require 'persistence_detector'
 require 'logger'
 require 'optparse'
 
-# ToDo - remove these placeholder stubs
-testing = PersistenceDetector::Client
-testing.client
-widget = PersistenceDetector::Widget.new
-widget.Hello
-
 usage = <<~END
 
   persistence-detector: detect persistent auto-start programs
@@ -50,18 +44,21 @@ OptionParser.new do |opts|
 end.parse!
 
 # setup console logging
-log = Logger.new($stdout)
-log.level = Logger::INFO
-log.level = Logger::DEBUG if @options[:verbose]
+logger = Logger.new($stdout)
+logger.level = Logger::INFO
+logger.level = Logger::DEBUG if @options[:verbose]
+
+client = PersistenceDetector::Client.new(logger)
 
 if @options[:examples]
   puts(usage)
 
 elsif @options[:list]
-  puts('do --list')
+  client.ListDetectors
 
 elsif @options[:detect]
-  puts("do --detect: #{@options[:detect]}")
+  client.DetectPersistenceTTP(@options[:detect])
 else
-  puts(usage)
+  # no args, run all persistence checks
+  client.DetectPersistenceTTP('all')
 end
