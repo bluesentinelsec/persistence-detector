@@ -43,22 +43,22 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-# setup console logging
-logger = Logger.new($stdout)
-logger.level = Logger::INFO
-logger.level = Logger::DEBUG if @options[:verbose]
 
-client = PersistenceDetector::Client.new(logger)
+client = PersistenceDetector::Client.new
+
+if @options[:verbose]
+  client.enable_verbose
+end
 
 if @options[:examples]
   puts(usage)
 
 elsif @options[:list]
-  client.ListDetectors
+  client.list_detectors
 
 elsif @options[:detect]
-  client.DetectPersistenceTTP(@options[:detect])
+  client.detect_persistence_ttp(@options[:detect])
 else
   # no args, run all persistence checks
-  client.DetectPersistenceTTP('all')
+  client.detect_persistence_ttp('all')
 end
