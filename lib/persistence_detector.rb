@@ -3,9 +3,9 @@
 
 require 'persistence_detector/detectors'
 require 'persistence_detector/detector_registry'
-require 'persistence_detector/detector_implementations/cron'
 require 'persistence_detector/log'
 
+require 'persistence_detector/detector_implementations/cron'
 
 ##
 # PersistenceDetector bridges functionality
