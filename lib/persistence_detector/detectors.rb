@@ -21,8 +21,12 @@ module Detectors
     end
 
     def display_metadata
-      # TODO: make this a table display?
-      puts("TTP ID: #{@ttp_id}")
+      puts "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+TTP ID: #{@ttp_id}\n
+Name: #{@name}\n
+Description: #{@description}\n
+Platforms: #{@platforms}\n
+References: #{@references}\n\n"
     end
   end
 end

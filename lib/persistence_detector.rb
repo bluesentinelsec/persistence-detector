@@ -6,6 +6,7 @@ require 'persistence_detector/detector_registry'
 require 'persistence_detector/log'
 
 require 'persistence_detector/detector_implementations/cron'
+require 'persistence_detector/detector_implementations/registry'
 
 ##
 # PersistenceDetector bridges functionality
@@ -15,6 +16,12 @@ module PersistenceDetector
   # Client contains methods for invoking persistence
   # detector functionality.
   class Client
+    attr_accessor :current_platform
+
+    def initialize
+      super
+      @current_platform = Gem::Platform::local.os
+    end
 
     def enable_verbose
       Log.enable_verbose
@@ -24,15 +31,20 @@ module PersistenceDetector
 
       if ttp_id == 'all' || ttp_id == ''
         $logger.debug('executing all applicable persistence detectors')
-        # TODO: only run detectors if platforms match
-        $detector_registry.each(&:detect_persistence)
+        $detector_registry.each do |d|
+          d.detect_persistence if d.platforms.include? @current_platform
+        end
 
       else
         $detector_registry.each do |d|
           if ttp_id == d.ttp_id
             $logger.debug("executing detector: #{d.ttp_id}")
-            # TODO: only run detectors if platforms match
-            d.detect_persistence
+
+            if d.platforms.include? @current_platform
+              d.detect_persistence
+            else
+              $logger.fatal("attempted to run #{d.ttp_id} on #{@current_platform}, but detector only works on #{d.platforms}")
+            end
           else
             $logger.fatal("unable to find detector: #{d.ttp_id}")
           end
