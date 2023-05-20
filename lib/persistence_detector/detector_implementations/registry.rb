@@ -21,6 +21,7 @@ class RegistryPersistence < Detectors::Detector
 
   def detect_persistence
     $logger.info('scanning for registry persistence')
+    # TODO: implement logic
   end
 end
 
