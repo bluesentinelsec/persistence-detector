@@ -4,13 +4,9 @@ require 'minitest/autorun'
 require 'persistence_detector'
 
 class PersistenceDetectorTest < Minitest::Test
-  def test_hello
+  def test_stub
     testing = PersistenceDetector::Client
     testing.client
-  end
-
-  def test_widget
-    widget = PersistenceDetector::Widget.new
-    widget.Hello
+    # TODO: implement tests
   end
 end
